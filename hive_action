@@ -1,0 +1,51 @@
+set hive.exec.dynamic.partition=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set hive.exec.max.dynamic.partitions.pernode=1000;
+set mapreduce.map.memory.mb=4096;
+set mapreduce.reduce.memory.mb=5120;
+
+use training;
+
+DROP TABLE IF EXISTS training.sessionizeLog_ext;
+DROP TABLE IF EXISTS training.sessionizeLogMean_ext;
+DROP TABLE IF EXISTS training.uniqueUrlVisits_ext;
+DROP TABLE IF EXISTS training.engagedUsers_ext;
+-------------------------------------------------------------Part1-----------------------
+CREATE EXTERNAL TABLE IF NOT EXISTS training.sessionizeLog_ext(
+userIp STRING,
+sessionId STRING,
+duration_miliseconds STRING,
+url STRING,
+userAgent STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/paytm/output/part1/';
+-------------------------------------------------------------Part2-----------------------
+CREATE EXTERNAL TABLE IF NOT EXISTS training.sessionizeLogMean_ext(
+mean STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/paytm/output/part2/';
+-------------------------------------------------------------Part3-----------------------
+CREATE EXTERNAL TABLE IF NOT EXISTS training.uniqueUrlVisits_ext(
+sessionId STRING,
+count STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/paytm/output/part3/';
+-------------------------------------------------------------Part4-----------------------
+CREATE EXTERNAL TABLE IF NOT EXISTS training.engagedUsers_ext(
+userIp STRING,
+totalDurationMs STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE
+location '/user/cloudera/paytm/output/part4/';
+ 
