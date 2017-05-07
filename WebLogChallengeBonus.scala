@@ -141,7 +141,8 @@ object WebLogChallengeBonus {
 
     //Part 4: Find the most engaged users, ie the IPs with the longest session times and write to hdfs
     webLogDfWithSessionId.groupBy("userIp").sum("duration_miliseconds").sort($"sum(duration_miliseconds)".desc).show()
-    webLogDfWithSessionId.groupBy("userIp").sum("duration_miliseconds").sort($"sum(duration_miliseconds)".desc).repartition(1).write.format("com.databricks.spark.csv").option("delimiter", "\t").m
+    webLogDfWithSessionId.groupBy("userIp").sum("duration_miliseconds").sort($"sum(duration_miliseconds)".desc).repartition(1).write.format("com.databricks.spark.csv").option("delimiter", "\t").mode("overwrite").save("hdfs://quickstart.cloudera:8020/user/cloudera/paytm/output/part4/")
+
 
   }
 }
